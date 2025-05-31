@@ -1,0 +1,5 @@
+﻿  Source.cpp
+C:\ANIME\SCAR-CRYP\Source.cpp(143,79): warning C4244: 'argument' : conversion de 'std::streamsize' en 'int', perte possible de données
+  SCAR-CRYP.vcxproj -> C:\ANIME\SCAR-CRYP\x64\Debug\SCAR-CRYP.exe
+  'pwsh.exe' n'est pas reconnu en tant que commande interne
+  ou externe, un programme exécutable ou un fichier de commandes.
