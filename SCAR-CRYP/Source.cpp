@@ -69,17 +69,17 @@ std::string selectFolder() {
 int showIntroMessage() {
     std::string message = R"(Programme de chiffrement AES-256
 
-Développé par : Mr SCARFACE
+DÃ©veloppÃ© par : Mr SCARFACE
 
 Fonctionnement :
-- Ce programme chiffre ou déchiffre tous les fichiers d’un dossier (sauf ceux exclus).
-- Une clé AES-256 est générée et sauvegardée dans le même répertoire que l’exécutable.
-- Les fichiers originaux sont remplacés par leurs versions chiffrées/déchiffrées.
+- Ce programme chiffre ou dÃ©chiffre tous les fichiers dâ€™un dossier (sauf ceux exclus).
+- Une clÃ© AES-256 est gÃ©nÃ©rÃ©e et sauvegardÃ©e dans le mÃªme rÃ©pertoire que lâ€™exÃ©cutable.
+- Les fichiers originaux sont remplacÃ©s par leurs versions chiffrÃ©es/dÃ©chiffrÃ©es.
 
-Consignes de sécurité :
-- ? Ne perdez pas la clé de chiffrement générée.
-- ? N’utilisez pas ce programme sur des fichiers système ou critiques.
-- ? Utilisation à vos propres risques.
+Consignes de sÃ©curitÃ© :
+- ? Ne perdez pas la clÃ© de chiffrement gÃ©nÃ©rÃ©e.
+- ? Nâ€™utilisez pas ce programme sur des fichiers systÃ¨me ou critiques.
+- ? Utilisation Ã  vos propres risques.
 
 Voulez-vous continuer ?")";
 
@@ -92,10 +92,10 @@ Voulez-vous continuer ?")";
     return result;
 }
 
-// === GÉNÉRATION CLÉ + HEX ===
+// === GÃ‰NÃ‰RATION DE LA CLÃ‰ + HEX ===
 bool generateAndSaveKey(unsigned char* key, unsigned char* iv) {
     if (!RAND_bytes(key, 32) || !RAND_bytes(iv, 16)) {
-        logEvent("Erreur génération de clé.");
+        logEvent("Erreur gÃ©nÃ©ration de clÃ©.");
         return false;
     }
 
@@ -112,15 +112,15 @@ bool generateAndSaveKey(unsigned char* key, unsigned char* iv) {
         hexOut << std::hex << std::setw(2) << std::setfill('0') << (int)iv[i];
     hexOut.close();
 
-    logEvent("Clé AES-256 générée.");
+    logEvent("ClÃ© AES-256 gÃ©nÃ©rÃ©e.");
     return true;
 }
 
-// === LECTURE CLÉ ===
+// === LECTURE CLÃ‰ ===
 bool loadKey(unsigned char* key, unsigned char* iv) {
     std::ifstream in(KEY_FILE, std::ios::binary);
     if (!in.read((char*)key, 32) || !in.read((char*)iv, 16)) {
-        logEvent("Erreur lecture de la clé.");
+        logEvent("Erreur lecture de la clÃ©.");
         return false;
     }
     return true;
@@ -163,7 +163,7 @@ void processDirectory(const std::string& dir, const unsigned char* key, const un
 
             std::string filepath = entry.path().string();
             if (processFile(filepath, key, iv, encrypt))
-                logEvent((encrypt ? "Chiffré : " : "Déchiffré : ") + filepath);
+                logEvent((encrypt ? "ChiffrÃ© : " : "DÃ©chiffrÃ© : ") + filepath);
             else
                 logEvent("Erreur : " + filepath);
         }
@@ -173,38 +173,38 @@ void processDirectory(const std::string& dir, const unsigned char* key, const un
 // === MESSAGE DE FIN ===
 void showFinalMessage(bool encrypt) {
     MessageBoxA(NULL,
-        encrypt ? "Vos fichiers ont été chiffrés avec succès." :
-        "Les fichiers ont été déchiffrés avec succès.",
-        encrypt ? "Chiffrement terminé" : "Déchiffrement terminé",
+        encrypt ? "Vos fichiers ont Ã©tÃ© chiffrÃ©s avec succÃ¨s." :
+        "Les fichiers ont Ã©tÃ© dÃ©chiffrÃ©s avec succÃ¨s.",
+        encrypt ? "Chiffrement terminÃ©" : "DÃ©chiffrement terminÃ©",
         MB_OK | MB_ICONINFORMATION);
 }
 
 // === MAIN ===
 int main() {
     if (showIntroMessage() != IDYES) {
-        MessageBoxA(NULL, "Programme annulé par l'utilisateur.", "Annulation", MB_OK | MB_ICONEXCLAMATION);
+        MessageBoxA(NULL, "Programme annulÃ© par l'utilisateur.", "Annulation", MB_OK | MB_ICONEXCLAMATION);
         return 0;
     }
 
     std::string folder = selectFolder();
     if (folder.empty()) {
-        MessageBoxA(NULL, "Aucun dossier sélectionné.", "Erreur", MB_OK | MB_ICONERROR);
+        MessageBoxA(NULL, "Aucun dossier sÃ©lectionnÃ©.", "Erreur", MB_OK | MB_ICONERROR);
         return 1;
     }
 
-    int mode = MessageBoxA(NULL, "Voulez-vous chiffrer les fichiers ? (Non = déchiffrer)", "Mode", MB_YESNO | MB_ICONQUESTION);
+    int mode = MessageBoxA(NULL, "Voulez-vous chiffrer les fichiers ? (Non = dÃ©chiffrer)", "Mode", MB_YESNO | MB_ICONQUESTION);
     bool encrypt = (mode == IDYES);
 
     unsigned char key[32], iv[16];
     if (encrypt) {
         if (!generateAndSaveKey(key, iv)) {
-            MessageBoxA(NULL, "Erreur lors de la génération de la clé.", "Erreur", MB_OK | MB_ICONERROR);
+            MessageBoxA(NULL, "Erreur lors de la gÃ©nÃ©ration de la clÃ©.", "Erreur", MB_OK | MB_ICONERROR);
             return 1;
         }
     }
     else {
         if (!loadKey(key, iv)) {
-            MessageBoxA(NULL, "Erreur de chargement de clé.", "Erreur", MB_OK | MB_ICONERROR);
+            MessageBoxA(NULL, "Erreur de chargement de clÃ©.", "Erreur", MB_OK | MB_ICONERROR);
             return 1;
         }
     }
